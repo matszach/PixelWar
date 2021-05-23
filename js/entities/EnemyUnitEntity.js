@@ -1,0 +1,3 @@
+class EnemyUnitEntity extends UnitEntity {
+
+}
