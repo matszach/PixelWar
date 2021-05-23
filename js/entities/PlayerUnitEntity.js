@@ -25,6 +25,10 @@ class PlayerUnitEntity extends UnitEntity {
                 }
             }
         }
+        this.attack.tick();
+        if(this.attack.ready()) {
+            this.attack.fire();
+        }
     }
 
 }

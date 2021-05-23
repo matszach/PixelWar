@@ -10,6 +10,7 @@ class BaseEntity extends Mx.Misc.GameEntity {
         this.sprite = viewRef.ssl.get(sheet).get(sx, sy).place(this.x, this.y).setShadow('black', 5);
         this.add(this.sprite);
         this.hitcircle = this.createHitCircle(hitradius, 'blue');
+        this.getCenter = () => this.hitcircle.getCenter();
         // this.hitcircle.show();
     }
 
