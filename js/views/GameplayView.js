@@ -15,14 +15,30 @@ class GameplayView extends Mx.View {
         this.playerProjectilesContainer = this.battleLayer.container();
         this.airParticles = this.battleLayer.container();
 
-        this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_PEASANT').setDraggable(true);
-        this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_SWORDSMAN').setDraggable(true);
-        this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_WIZARD').setDraggable(true);
-        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_GRUNT');
-        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_GRUNT');
-        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
-        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
+        this.arenaBounds = this.mapContainer.add2(new Mx.Geo.Rectangle(-750, -400, 1500, 800, undefined, 'red', 2))
+
+        for(let i = 0; i < 3; i++) {
+            this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_PEASANT');
+            this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_SWORDSMAN');
+            this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_WIZARD');
+            this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_GRUNT');
+            this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_GRUNT');
+            this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
+            this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
+            this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
+            this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
+        }
+
+        this.setUnitDragEnabled(true);
+    
     }
+
+    setUnitDragEnabled(state = true) {
+        for(let u of this.playerUnitsContainer.children) {
+            u.setDraggable(state);
+        }
+    }
+    
 
     onUpdate() {
         if(this.input.isDown('Space')) {

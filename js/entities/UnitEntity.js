@@ -15,24 +15,27 @@ class UnitEntity extends BaseEntity {
 
     onUpdate() {
         this.spaceout();
+        this.snapToArena();
         this.findTarget();
-        this.faceTarget();
         this.handleAttack();
-    }
-
-    dead() {
-        return this.hp.depleted();
     }
 
     spaceout() {
         if(this.timers.spaceout.every(3)) {
             for(let u of [...this.allyTeamContainer.children, ...this.opposedTeamContainer.children]) {
-                if(u !== this && Mx.Geo.Collision.circleVsCircle(u.hitcircle, this.hitcircle)) {
+                if(u !== this && !u.expired && Mx.Geo.Collision.circleVsCircle(u.hitcircle, this.hitcircle)) {
                     const phi = this.directionTo(u.x, u.y);
-                    this.movePolar(-phi, 2);
-                    u.movePolar(phi, 2);
+                    this.movePolar(-phi, 3);
+                    u.movePolar(phi, 3);
                 }
             }
+        }
+    }
+
+    snapToArena() {
+        const arena = this.args.viewRef.arenaBounds;
+        if(!arena.isPointOver(this.x, this.y)) {
+            this.easeTo(0, 0, 0.02);
         }
     }
 
@@ -42,28 +45,34 @@ class UnitEntity extends BaseEntity {
             this.target = null;
             let dist = Infinity;
             for(let u of this.opposedTeamContainer.children) {
-                const newDist = Mx.Geo.Distance.simple(u.x, u.y, this.x, this.y)
-                if(dist > newDist) {
-                    this.target = u;
-                    dist = newDist;
+                if(!u.expired) {
+                    const newDist = Mx.Geo.Distance.simple(u.x, u.y, this.x, this.y)
+                    if(dist > newDist) {
+                        this.target = u;
+                        dist = newDist;
+                    }
                 }
             }
         }
     }
 
-    faceTarget() {
+    handleAttack() {
+        this.attack.tick();
         if(this.target) {
             const phi = this.directionTo(this.target.x, this.target.y);
             const dphi = this.sprite.rotation - phi;
             this.sprite.rotation -= dphi * 0.1;
+            const dist = Mx.Geo.Distance.simple(this.x, this.y, this.target.x, this.target.y);
+            if(dist > this.attack.range) {
+                this.movePolar(phi, this.attr.speed.value);
+            } else if(this.attack.ready()) {
+                this.attack.fire();
+            }
         }
     }
 
-    handleAttack() {
-        this.attack.tick();
-        if(this.attack.ready()) {
-            this.attack.fire();
-        }
+    dead() {
+        return this.hp.depleted();
     }
 
     setDraggable(state = true) {

@@ -46,7 +46,13 @@ class Attack {
     }
 
     onAnimationFinished() {
-        
+        // TODO
+        if(!!this.unitRef.target) {
+            this.unitRef.target.hp.take(5);
+            if(this.unitRef.target.dead()) {
+                this.unitRef.target.destroy();
+            }
+        }
     }
 
 }
