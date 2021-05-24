@@ -1,10 +1,10 @@
 class GameplayView extends Mx.View {
 
     onCreate() {
-        this.backgroundColor = '#222222';
+        this.backgroundColor = '#335533';
         this.ssl = new AppSpriteSheetLoader();
         this.rng = new Mx.Rng();
-        this.playerUnitSpawner = new PlayerUnitSpawner(this);
+        this.spawner = new Spawner(this);
 
         this.battleLayer = this.registerLayer(0.5, 0.5, 1600, 900);
         this.mapContainer = this.battleLayer.container();
@@ -15,13 +15,21 @@ class GameplayView extends Mx.View {
         this.playerProjectilesContainer = this.battleLayer.container();
         this.airParticles = this.battleLayer.container();
 
-        this.playerUnitSpawner.spawn(0, 0, 'P_PEASANT').enableInteraction();
-        this.playerUnitSpawner.spawn(0, 0, 'P_SWORDSMAN').enableInteraction();
-        this.playerUnitSpawner.spawn(0, 0, 'P_WIZARD').enableInteraction();
-
+        this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_PEASANT').setDraggable(true);
+        this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_SWORDSMAN').setDraggable(true);
+        this.spawner.spawnPlayerUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'P_WIZARD').setDraggable(true);
+        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_GRUNT');
+        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_GRUNT');
+        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
+        this.spawner.spawnEnemyUnit(this.rng.float(-400, 400), this.rng.float(-400, 400), 'E_SKELETON'); 
     }
 
     onUpdate() {
+        if(this.input.isDown('Space')) {
+            this.battleLayer.pause();
+        } else {
+            this.battleLayer.unpause();
+        }
 
     }
 
