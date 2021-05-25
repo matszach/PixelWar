@@ -21,12 +21,12 @@ class UnitEntity extends BaseEntity {
     }
 
     spaceout() {
-        if(this.timers.spaceout.every(3)) {
+        if(this.timers.spaceout.every(1)) {
             for(let u of [...this.allyTeamContainer.children, ...this.opposedTeamContainer.children]) {
                 if(u !== this && !u.expired && Mx.Geo.Collision.circleVsCircle(u.hitcircle, this.hitcircle)) {
                     const phi = this.directionTo(u.x, u.y);
-                    this.movePolar(-phi, 3);
-                    u.movePolar(phi, 3);
+                    this.movePolar(-phi, 2);
+                    u.movePolar(phi, 2);
                 }
             }
         }
@@ -41,7 +41,7 @@ class UnitEntity extends BaseEntity {
 
     findTarget() {
         // TODO targeting stragety based on attack type (?)
-        if(this.timers.spaceout.every(120) || this.target === null || this.target.dead()) {
+        if(this.timers.spaceout.every(300) || this.target === null || this.target.dead()) {
             this.target = null;
             let dist = Infinity;
             for(let u of this.opposedTeamContainer.children) {
@@ -60,7 +60,7 @@ class UnitEntity extends BaseEntity {
         this.attack.tick();
         if(this.target) {
             const phi = this.directionTo(this.target.x, this.target.y);
-            const dphi = this.sprite.rotation - phi;
+            let dphi = this.sprite.rotation - phi;
             this.sprite.rotation -= dphi * 0.1;
             const dist = Mx.Geo.Distance.simple(this.x, this.y, this.target.x, this.target.y);
             if(dist > this.attack.range) {
