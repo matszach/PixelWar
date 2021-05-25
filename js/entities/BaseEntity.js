@@ -11,6 +11,7 @@ class BaseEntity extends Mx.Misc.GameEntity {
         this.add(this.sprite);
         this.hitcircle = this.createHitCircle(hitradius, 'blue');
         this.getCenter = () => this.hitcircle.getCenter();
+        this.isPointOver = (x, y) => this.hitcircle.isPointOver(x, y);
         // this.hitcircle.show();
     }
 

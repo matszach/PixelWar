@@ -77,7 +77,7 @@ class UnitEntity extends BaseEntity {
 
     setDraggable(state = true) {
         if(state) {
-            this.enableDrag();
+            this.enableDrag(); // todo write inner drag logic
             this.on('over', () => this.sprite.setShadow('red', 5));
             this.on('out', () => this.sprite.setShadow('black', 5));
         } else {
