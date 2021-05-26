@@ -25,7 +25,6 @@ class UnitEntity extends BaseEntity {
             for(let u of [...this.allyTeamContainer.children, ...this.opposedTeamContainer.children]) {
                 if(u !== this && !u.expired && Mx.Geo.Collision.circleVsCircle(u.hitcircle, this.hitcircle)) {
                     const phi = this.directionTo(u.x, u.y);
-                    this.movePolar(-phi, 2);
                     u.movePolar(phi, 2);
                 }
             }
