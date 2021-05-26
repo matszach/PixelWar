@@ -17,10 +17,11 @@ class TopMenu extends Mx.Gui.GuiComponent {
 
     update() {
         const {xInCanvas, yInCanvas, justDownLeft} = this.options.viewRef.input.mouse();
+        const {spawner, arenaBounds} = this.options.viewRef;
         if(justDownLeft) {
             const selected = this.selectedUnit;
-            if(selected) {
-                this.options.viewRef.spawner.spawnPlayerUnit(selected, xInCanvas, yInCanvas);
+            if(selected && arenaBounds.isPointOver(xInCanvas, yInCanvas)) {
+                spawner.spawnPlayerUnit(selected, xInCanvas, yInCanvas);
             }
         }
     }
