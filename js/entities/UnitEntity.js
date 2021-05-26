@@ -26,6 +26,7 @@ class UnitEntity extends BaseEntity {
                 if(u !== this && !u.expired && Mx.Geo.Collision.circleVsCircle(u.hitcircle, this.hitcircle)) {
                     const phi = this.directionTo(u.x, u.y);
                     u.movePolar(phi, 2);
+                    this.movePolar(-phi, 0.1);
                 }
             }
         }
