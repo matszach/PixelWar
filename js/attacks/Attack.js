@@ -46,12 +46,13 @@ class Attack {
     }
 
     onAnimationFinished() {
-        // TODO
-        if(!!this.unitRef.target) {
-            this.unitRef.target.hp.take(5);
-            if(this.unitRef.target.dead()) {
-                this.unitRef.target.destroy();
-            }
+        const unit = this.unitRef;
+        const target = unit.target;
+        const rng = unit.args.viewRef.rng;
+        if(!!target) {
+            const power = unit.attr.power.value;
+            const dmg = rng.float(0.5, 1) * power; 
+            target.damage(dmg);
         }
     }
 

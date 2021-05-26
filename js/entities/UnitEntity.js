@@ -75,6 +75,28 @@ class UnitEntity extends BaseEntity {
         return this.hp.depleted();
     }
 
+    damage(dmg) {
+        dmg -= this.attr.def.value;
+        if(dmg > 0) {
+            this.bleed(dmg);
+            this.hp.take(dmg);
+            if(this.dead()) {
+                this.bleed(this.hp.max);
+                this.destroy();
+            }
+        }
+    }
+
+    bleed(severity) {
+        const {rng, airParticles} = this.args.viewRef; 
+        const drops = rng.int(0.2 * severity, 0.6 * severity);
+        for(let i = 0; i < drops; i++) {
+            const drop = new BloodAirParticle(this.x, this.y, this.args.viewRef);
+            drop.acceleratePolar(rng.float(0, 2 * Math.PI), rng.float(0, 6));
+            airParticles.add(drop);
+        }
+    }
+
     setDraggable(state = true) {
         if(state) {
             this.enableDrag(); // todo write inner drag logic
